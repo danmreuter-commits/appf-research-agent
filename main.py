@@ -31,7 +31,8 @@ from datetime import datetime
 import schedule
 
 import config
-from agent.emailer import send_digest
+from agent.database import save_daily_record
+from agent.emailer import generate_digest, send_digest
 from agent.researcher import run_research
 from agent.state import filter_new_findings
 
@@ -68,10 +69,14 @@ def run_daily_job() -> None:
         logger.info("Phase 2/3 — Deduplicating against previously sent items …")
         new_findings = filter_new_findings(raw_findings)
 
-        # 3. Digest + email
-        # We always send — even an "empty" run sends "No significant updates today."
+        # 3. Generate digest text (shared by email + database)
         logger.info("Phase 3/3 — Generating digest and sending email …")
-        send_digest(new_findings)
+        digest_text = generate_digest(new_findings)
+        send_digest(new_findings, digest_text)
+
+        # 4. Save to Airtable (no-op if AIRTABLE_API_KEY not configured)
+        logger.info("Phase 4/4 — Saving record to database …")
+        save_daily_record(new_findings, digest_text)
 
         elapsed = (datetime.now() - start).total_seconds()
         logger.info("Job complete in %.1f s | %d new finding(s) in digest", elapsed, len(new_findings))

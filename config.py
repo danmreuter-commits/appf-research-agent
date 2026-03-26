@@ -29,6 +29,11 @@ EMAIL_SMTP_PASS: str = os.getenv("EMAIL_SMTP_PASS", "")
 # How many days back to consider a finding "already sent" (deduplication window)
 LOOKBACK_DAYS: int = int(os.getenv("LOOKBACK_DAYS", "7"))
 
+# ── Airtable (optional — for searchable database of daily briefs) ──────────────
+AIRTABLE_API_KEY:   str = os.getenv("AIRTABLE_API_KEY", "")
+AIRTABLE_BASE_ID:   str = os.getenv("AIRTABLE_BASE_ID", "")
+AIRTABLE_TABLE_NAME: str = os.getenv("AIRTABLE_TABLE_NAME", "GWRE Daily Briefs")
+
 # ── Validation ────────────────────────────────────────────────────────────────
 def validate() -> None:
     """Fail fast if required settings are missing."""

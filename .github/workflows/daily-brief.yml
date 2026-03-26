@@ -36,13 +36,16 @@ jobs:
       # 4. Run the agent (secrets come from GitHub → Settings → Secrets)
       - name: Run GWRE Research Agent
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
-          EMAIL_TO:          ${{ secrets.EMAIL_TO }}
-          EMAIL_SMTP_HOST:   ${{ secrets.EMAIL_SMTP_HOST }}
-          EMAIL_SMTP_PORT:   ${{ secrets.EMAIL_SMTP_PORT }}
-          EMAIL_SMTP_USER:   ${{ secrets.EMAIL_SMTP_USER }}
-          EMAIL_SMTP_PASS:   ${{ secrets.EMAIL_SMTP_PASS }}
+          ANTHROPIC_API_KEY:    ${{ secrets.ANTHROPIC_API_KEY }}
+          EMAIL_FROM:           ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO:             ${{ secrets.EMAIL_TO }}
+          EMAIL_SMTP_HOST:      ${{ secrets.EMAIL_SMTP_HOST }}
+          EMAIL_SMTP_PORT:      ${{ secrets.EMAIL_SMTP_PORT }}
+          EMAIL_SMTP_USER:      ${{ secrets.EMAIL_SMTP_USER }}
+          EMAIL_SMTP_PASS:      ${{ secrets.EMAIL_SMTP_PASS }}
+          AIRTABLE_API_KEY:     ${{ secrets.AIRTABLE_API_KEY }}
+          AIRTABLE_BASE_ID:     ${{ secrets.AIRTABLE_BASE_ID }}
+          AIRTABLE_TABLE_NAME:  ${{ secrets.AIRTABLE_TABLE_NAME }}
         run: python main.py
 
       # 5. Save the deduplication state so stories don't repeat across days.

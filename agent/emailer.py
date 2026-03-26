@@ -143,9 +143,13 @@ def _send_smtp(subject: str, plain_body: str, html_body: str) -> None:
 
 # ── Public interface ──────────────────────────────────────────────────────────
 
-def send_digest(findings: list[dict]) -> None:
+def send_digest(findings: list[dict], digest_text: str | None = None) -> None:
     """
-    Generate a ≤100-word bullet digest from findings and dispatch it by email.
+    Dispatch the daily digest by email.
+
+    digest_text: pass a pre-generated digest string to avoid a second Claude
+    call (main.py generates it once and shares it with the database layer).
+    If omitted, the digest is generated here.
 
     If SMTP credentials are not configured, the digest is printed to stdout
     so the agent still works out of the box during development.
@@ -153,7 +157,7 @@ def send_digest(findings: list[dict]) -> None:
     today_str = datetime.now().strftime("%B %d, %Y")
     subject = f"GWRE Intel Brief – {today_str}"
 
-    plain_body = generate_digest(findings)
+    plain_body = digest_text if digest_text is not None else generate_digest(findings)
     html_body  = _to_html(subject, plain_body)
 
     smtp_configured = all([
